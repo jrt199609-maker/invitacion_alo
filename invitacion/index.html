@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invitación · Alondra 22</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Quicksand:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(145deg, #fce4ec 0%, #f8e8f0 100%);
+            display: flex; justify-content: center; align-items: center;
+            font-family: 'Quicksand', sans-serif;
+            padding: 20px; overflow-x: hidden;
+        }
+
+        /* PANTALLA DE APERTURA */
+        .pantalla-apertura {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, #f8cddd 0%, #fce4ec 50%, #e8b4c8 100%);
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            z-index: 9999; transition: opacity 1s ease, visibility 1s ease;
+            cursor: pointer; text-align: center; padding: 20px;
+        }
+        .pantalla-apertura.abierta { opacity: 0; visibility: hidden; pointer-events: none; }
+        .pantalla-apertura::before {
+            content: "🎈🎂🎉"; position: absolute; top: 10%;
+            font-size: 3rem; letter-spacing: 10px;
+            animation: flotar 3s ease-in-out infinite;
+        }
+        .pantalla-apertura::after {
+            content: "✨🎀✨"; position: absolute; bottom: 10%;
+            font-size: 2.5rem; letter-spacing: 10px;
+            animation: flotar 3s ease-in-out infinite reverse;
+        }
+        @keyframes flotar {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        .sobre-icono {
+            font-size: 6rem; margin-bottom: 1.5rem;
+            animation: latir 1.5s ease-in-out infinite;
+            filter: drop-shadow(0 10px 20px rgba(180, 70, 110, 0.3));
+        }
+        @keyframes latir {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        .pantalla-apertura h1 {
+            font-family: 'Playfair Display', serif; font-size: 3.5rem;
+            color: #a13d5f; margin-bottom: 0.5rem;
+            text-shadow: 0 4px 15px rgba(180, 70, 110, 0.25); letter-spacing: 2px;
+        }
+        .pantalla-apertura .fecha-apertura {
+            font-size: 1.4rem; color: #7a4b5c;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 0.5rem 2rem; border-radius: 60px; margin-bottom: 2.5rem;
+            letter-spacing: 3px; font-weight: 600; border: 2px solid #ffffffcc;
+            box-shadow: 0 4px 15px rgba(180, 70, 110, 0.15);
+        }
+        .boton-abrir {
+            background: linear-gradient(135deg, #b3416b, #d47a9a);
+            color: white; padding: 1.2rem 3rem; border-radius: 60px;
+            font-family: 'Quicksand', sans-serif; font-weight: 700; font-size: 1.4rem;
+            letter-spacing: 2px; border: 3px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 15px 35px rgba(180, 70, 110, 0.4);
+            display: inline-flex; align-items: center; gap: 15px;
+            transition: all 0.3s ease; animation: pulso 2s ease-in-out infinite;
+            cursor: pointer; text-transform: uppercase;
+        }
+        .boton-abrir:hover { transform: scale(1.05); box-shadow: 0 20px 45px rgba(180, 70, 110, 0.5); }
+        @keyframes pulso {
+            0%, 100% { box-shadow: 0 15px 35px rgba(180, 70, 110, 0.4); }
+            50% { box-shadow: 0 15px 50px rgba(180, 70, 110, 0.7); }
+        }
+        .instruccion {
+            margin-top: 1.5rem; color: #7a4b5c;
+            font-size: 0.95rem; letter-spacing: 1px; opacity: 0.8;
+        }
+
+        /* INVITACIÓN */
+        .invitacion-wrapper {
+            opacity: 0; transform: scale(0.9);
+            transition: opacity 1s ease 0.3s, transform 1s ease 0.3s;
+            width: 100%; max-width: 750px;
+        }
+        .invitacion-wrapper.visible { opacity: 1; transform: scale(1); }
+
+        .invitacion {
+            width: 100%;
+            background: linear-gradient(160deg, #fff5f8 0%, #ffeef3 50%, #fce4ec 100%);
+            border-radius: 60px;
+            box-shadow: 0 25px 50px -10px rgba(180, 80, 120, 0.5),
+                        0 10px 20px -5px rgba(0, 0, 0, 0.15);
+            padding: 2.5rem 2.2rem;
+            border: 3px solid rgba(255, 255, 255, 0.95);
+            position: relative; overflow: hidden; text-align: center;
+        }
+        .invitacion::before {
+            content: ""; position: absolute;
+            top: -80px; right: -80px;
+            width: 250px; height: 250px;
+            background: radial-gradient(circle, #f8cddd 0%, transparent 70%);
+            border-radius: 50%; pointer-events: none; opacity: 0.7;
+        }
+        .invitacion::after {
+            content: ""; position: absolute;
+            bottom: -80px; left: -80px;
+            width: 250px; height: 250px;
+            background: radial-gradient(circle, #f8cddd 0%, transparent 70%);
+            border-radius: 50%; pointer-events: none; opacity: 0.7;
+        }
+
+        /* FOTO */
+        .foto-seccion {
+            position: relative; display: flex;
+            justify-content: center; margin-bottom: 1.2rem; z-index: 2;
+        }
+        .foto-marco {
+            position: relative; width: 200px; height: 200px;
+            border-radius: 50%; padding: 6px;
+            background: linear-gradient(135deg, #b3416b, #d47a9a, #f8cddd, #b3416b);
+            background-size: 300% 300%;
+            animation: bordeAnimado 6s ease infinite;
+            box-shadow: 0 15px 35px rgba(180, 70, 110, 0.4),
+                        0 0 0 6px rgba(255, 255, 255, 0.9),
+                        0 0 0 12px rgba(248, 205, 221, 0.5);
+        }
+        @keyframes bordeAnimado {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        .foto-alondra {
+            width: 100%; height: 100%; border-radius: 50%;
+            object-fit: cover; object-position: center 30%;
+            display: block; border: 4px solid #ffffff;
+            box-shadow: inset 0 0 20px rgba(180, 70, 110, 0.2);
+        }
+        .decoracion-corazon {
+            position: absolute; font-size: 1.5rem;
+            animation: flotarCorazon 3s ease-in-out infinite;
+            filter: drop-shadow(0 3px 6px rgba(180, 70, 110, 0.3));
+        }
+        .corazon-1 { top: 5%; left: 10%; animation-delay: 0s; }
+        .corazon-2 { top: 15%; right: 8%; animation-delay: 0.5s; }
+        .corazon-3 { bottom: 15%; left: 5%; animation-delay: 1s; }
+        .corazon-4 { bottom: 5%; right: 10%; animation-delay: 1.5s; }
+        @keyframes flotarCorazon {
+            0%, 100% { transform: translateY(0) rotate(-10deg); }
+            50% { transform: translateY(-10px) rotate(10deg); }
+        }
+        .cinta-edad {
+            position: absolute; bottom: 5px; left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #b3416b, #d47a9a);
+            color: white; padding: 0.4rem 1.5rem; border-radius: 40px;
+            font-family: 'Playfair Display', serif; font-weight: 700;
+            font-size: 1.3rem; letter-spacing: 2px;
+            border: 3px solid #ffffff;
+            box-shadow: 0 5px 15px rgba(180, 70, 110, 0.4);
+            white-space: nowrap; z-index: 3;
+        }
+
+        /* TEXTOS */
+        .titulo-principal {
+            font-family: 'Playfair Display', serif; font-weight: 700; font-size: 2.5rem;
+            color: #a13d5f; letter-spacing: 1px; margin-bottom: 0.25rem; display: inline-block;
+            position: relative; z-index: 2;
+        }
+        .titulo-principal::after { content: "🎂"; font-size: 2rem; margin-left: 8px; display: inline-block; }
+        .subtitulo {
+            font-weight: 300; font-size: 1.1rem; color: #7a4b5c;
+            background: #fce4ec99; display: inline-block; padding: 0.2rem 1.8rem;
+            border-radius: 40px; margin-bottom: 1.5rem; letter-spacing: 2px;
+            border: 1px solid #f8c8d8; position: relative; z-index: 2;
+        }
+        .nombre-festejada {
+            font-family: 'Playfair Display', serif; font-weight: 700; font-size: 4.5rem;
+            color: #b3416b; text-shadow: 0 4px 12px rgba(190, 70, 110, 0.3);
+            margin: 0.3rem 0 0.5rem 0; line-height: 1.1;
+            position: relative; z-index: 2; letter-spacing: 3px;
+        }
+
+        /* CONTADOR */
+        .contador {
+            background: linear-gradient(135deg, #b3416b, #d47a9a);
+            border-radius: 30px; padding: 1.5rem 1rem; margin: 1rem 0 1.5rem 0;
+            box-shadow: 0 8px 25px rgba(180, 70, 110, 0.35);
+            border: 2px solid #ffffffcc;
+            position: relative; z-index: 2;
+        }
+        .contador-titulo {
+            color: white; font-weight: 600; font-size: 1.1rem;
+            letter-spacing: 2px; margin-bottom: 0.8rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .contador-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+            max-width: 400px; margin: 0 auto;
+        }
+        .contador-item {
+            background: rgba(255,255,255,0.2); backdrop-filter: blur(5px);
+            border-radius: 20px; padding: 0.5rem 0.2rem;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        .contador-numero {
+            color: white; font-size: 2.2rem; font-weight: 700;
+            display: block; line-height: 1.2; text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .contador-etiqueta {
+            color: rgba(255,255,255,0.9); font-size: 0.7rem;
+            text-transform: uppercase; letter-spacing: 1px; font-weight: 600;
+        }
+
+        .detalle {
+            display: flex; flex-direction: column; align-items: center;
+            gap: 1rem; margin: 1.5rem 0;
+            position: relative; z-index: 2;
+        }
+        .detalle-item {
+            display: flex; align-items: center; gap: 15px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 0.8rem 2.2rem; border-radius: 60px;
+            box-shadow: 0 4px 12px rgba(160, 80, 110, 0.15);
+            width: fit-content; border: 1px solid #fadce6;
+            font-size: 1.4rem; color: #3d2a30;
+        }
+        .detalle-item i { color: #b3416b; font-size: 1.9rem; width: 2rem; text-align: center; }
+        .fecha-destacada {
+            background: #b3416b10; border-radius: 40px; padding: 0.1rem 1.2rem;
+            font-weight: 600; color: #a13d5f;
+        }
+        .direccion {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1rem 2.5rem; border-radius: 60px; display: inline-block;
+            border: 2px solid #f8c8d8; box-shadow: 0 4px 10px rgba(180, 70, 110, 0.15);
+            margin: 0.8rem 0; font-size: 1.5rem; font-weight: 500; color: #2f1e24;
+            position: relative; z-index: 2;
+        }
+        .direccion i { color: #b3416b; margin-right: 15px; font-size: 1.8rem; }
+        .mensaje {
+            font-family: 'Playfair Display', serif; font-style: italic; font-weight: 400;
+            font-size: 1.6rem; color: #6e4153; background: rgba(255, 255, 255, 0.85);
+            padding: 0.8rem 1rem; border-radius: 100px; margin: 1rem 0 1.2rem 0;
+            border-top: 2px solid #f8cddd; border-bottom: 2px solid #f8cddd;
+            position: relative; z-index: 2;
+        }
+
+        /* ============================================
+           SECCIÓN DE SPOTIFY
+           ============================================ */
+        .spotify-seccion {
+            background: linear-gradient(135deg, #1DB954, #1ed760);
+            border-radius: 25px;
+            padding: 1.2rem 1rem 1rem 1rem;
+            margin: 1.5rem 0;
+            box-shadow: 0 10px 25px rgba(29, 185, 84, 0.35);
+            border: 2px solid #ffffffcc;
+            position: relative;
+            z-index: 2;
+        }
+
+        .spotify-titulo {
+            color: white;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 1.5px;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .spotify-titulo i {
+            font-size: 1.5rem;
+        }
+
+        .spotify-embed {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .spotify-nota {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.75rem;
+            margin-top: 0.7rem;
+            font-style: italic;
+            text-align: center;
+        }
+
+        /* BOTONES */
+        .botones-container {
+            display: flex; flex-direction: column; gap: 12px;
+            margin: 1rem 0 0.5rem 0; position: relative; z-index: 2;
+        }
+        .boton-whatsapp {
+            background: #25D366; border: none; padding: 1rem 2rem;
+            border-radius: 60px; color: white; font-family: 'Quicksand', sans-serif;
+            font-weight: 700; font-size: 1.2rem; letter-spacing: 1px;
+            display: inline-flex; align-items: center; justify-content: center;
+            gap: 12px; box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4);
+            transition: all 0.2s ease; border: 2px solid #ffffffdd;
+            text-decoration: none; cursor: pointer; width: 100%;
+        }
+        .boton-whatsapp i { font-size: 1.8rem; }
+        .boton-whatsapp:hover {
+            background: #20b859; transform: scale(1.02);
+            box-shadow: 0 12px 28px rgba(37, 211, 102, 0.5);
+        }
+        .boton-ubicacion {
+            background: white; border: 2px solid #f0d4de; padding: 0.9rem 1rem;
+            border-radius: 60px; color: #a13d5f; font-family: 'Quicksand', sans-serif;
+            font-weight: 600; font-size: 1rem; display: inline-flex;
+            align-items: center; justify-content: center; gap: 10px;
+            transition: all 0.2s ease; text-decoration: none; cursor: pointer;
+            box-shadow: 0 4px 12px rgba(160, 80, 110, 0.1);
+            width: 100%;
+        }
+        .boton-ubicacion i { font-size: 1.4rem; }
+        .boton-ubicacion:hover {
+            background: #fce4ec; transform: scale(1.02);
+            box-shadow: 0 6px 16px rgba(160, 80, 110, 0.2);
+        }
+
+        .footer {
+            margin-top: 1.5rem; font-size: 0.9rem; color: #7a4b5c;
+            letter-spacing: 1px; border-top: 1px solid rgba(240, 212, 222, 0.8);
+            padding-top: 1.2rem; display: flex; justify-content: center;
+            gap: 12px; flex-wrap: wrap;
+            position: relative; z-index: 2;
+        }
+        .footer i { color: #bf6a86; }
+
+        @media (max-width: 600px) {
+            .pantalla-apertura h1 { font-size: 2.5rem; }
+            .pantalla-apertura .fecha-apertura { font-size: 1rem; padding: 0.4rem 1.2rem; }
+            .boton-abrir { font-size: 1.1rem; padding: 1rem 2rem; }
+            .sobre-icono { font-size: 4.5rem; }
+            .invitacion { padding: 1.5rem 1rem; border-radius: 40px; }
+            .foto-marco { width: 160px; height: 160px; }
+            .cinta-edad { font-size: 1.1rem; padding: 0.3rem 1.2rem; }
+            .titulo-principal { font-size: 2rem; }
+            .nombre-festejada { font-size: 3.2rem; letter-spacing: 2px; }
+            .detalle-item { font-size: 1.1rem; padding: 0.6rem 1.4rem; gap: 10px; }
+            .detalle-item i { font-size: 1.5rem; width: 1.5rem; }
+            .direccion { font-size: 1.2rem; padding: 0.8rem 1.4rem; }
+            .mensaje { font-size: 1.3rem; }
+            .boton-whatsapp { font-size: 1rem; padding: 0.9rem 1.5rem; }
+            .contador-numero { font-size: 1.8rem; }
+            .contador-grid { gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- PANTALLA DE APERTURA -->
+    <div class="pantalla-apertura" id="pantallaApertura" onclick="abrirInvitacion()">
+        <div class="sobre-icono">💌</div>
+        <h1>ALONDRA</h1>
+        <div class="fecha-apertura">25 · SEPTIEMBRE · 2026</div>
+        <button class="boton-abrir" onclick="abrirInvitacion(event)">
+            <i class="fas fa-envelope-open-text"></i> Abrir Invitación
+        </button>
+        <p class="instruccion">✨ Toca para abrir ✨</p>
+    </div>
+
+    <!-- INVITACIÓN PRINCIPAL -->
+    <div class="invitacion-wrapper" id="invitacionWrapper">
+        <div class="invitacion">
+            
+            <!-- FOTO -->
+            <div class="foto-seccion">
+                <span class="decoracion-corazon corazon-1">💖</span>
+                <span class="decoracion-corazon corazon-2">🌸</span>
+                <span class="decoracion-corazon corazon-3">✨</span>
+                <span class="decoracion-corazon corazon-4">🎀</span>
+                
+                <div class="foto-marco">
+                    <img src="alondra.jpg" alt="Alondra" class="foto-alondra">
+                    <div class="cinta-edad">🎂 22 años 🎂</div>
+                </div>
+            </div>
+
+            <div style="display: flex; justify-content: center; gap: 5px; font-size: 1.8rem; opacity: 0.5; margin-bottom: 0.3rem;">
+                <span>🌸</span> <span>🎀</span> <span>🌸</span>
+            </div>
+            
+            <h1 class="titulo-principal">Invitación</h1>
+            <div class="subtitulo">✨ cumpleaños ✨</div>
+
+            <div class="nombre-festejada">ALONDRA</div>
+
+            <!-- CONTADOR -->
+            <div class="contador">
+                <div class="contador-titulo">
+                    <i class="fas fa-clock"></i> ¡Faltan!
+                </div>
+                <div class="contador-grid">
+                    <div class="contador-item">
+                        <span class="contador-numero" id="dias">00</span>
+                        <span class="contador-etiqueta">Días</span>
+                    </div>
+                    <div class="contador-item">
+                        <span class="contador-numero" id="horas">00</span>
+                        <span class="contador-etiqueta">Horas</span>
+                    </div>
+                    <div class="contador-item">
+                        <span class="contador-numero" id="minutos">00</span>
+                        <span class="contador-etiqueta">Minutos</span>
+                    </div>
+                    <div class="contador-item">
+                        <span class="contador-numero" id="segundos">00</span>
+                        <span class="contador-etiqueta">Segundos</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detalles -->
+            <div class="detalle">
+                <div class="detalle-item">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span><span class="fecha-destacada">25 de septiembre</span> · 2026</span>
+                </div>
+                <div class="detalle-item">
+                    <i class="fas fa-clock"></i>
+                    <span>6:00 PM</span>
+                </div>
+            </div>
+
+            <div class="direccion">
+                <i class="fas fa-map-pin"></i> Calle Arroyo s/n
+            </div>
+
+            <div class="mensaje">
+                “La vida es una fiesta, y tú eres la invitada de honor”
+            </div>
+
+            <!-- 🎵 SECCIÓN DE SPOTIFY 🎵 -->
+            <div class="spotify-seccion">
+                <div class="spotify-titulo">
+                    <i class="fab fa-spotify"></i> 🎧 Dale play para escuchar
+                </div>
+                <div class="spotify-embed">
+                    <iframe style="border-radius:15px" 
+                            src="https://open.spotify.com/embed/track/3h5T5JypYU7huFiVYhv1dr?utm_source=generator&theme=0" 
+                            width="100%" 
+                            height="152" 
+                            frameBorder="0" 
+                            allowfullscreen="" 
+                            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+                            loading="lazy">
+                    </iframe>
+                </div>
+                <p class="spotify-nota">🎧 Dale play para escuchar</p>
+            </div>
+
+            <!-- BOTONES -->
+            <div class="botones-container">
+                <a href="https://wa.me/522482147837?text=¡Hola!%20🤩🥳%20Quiero%20confirmar%20mi%20asistencia%20a%20tu%20cumpleaños." 
+                   target="_blank" 
+                   class="boton-whatsapp">
+                    <i class="fab fa-whatsapp"></i> Confirmar asistencia
+                </a>
+
+                <a href="https://www.google.com/maps/place/19%C2%B021'24.6%22N+98%C2%B040'25.6%22W/@19.3568234,-98.6737748,86m/data=!3m1!1e3!4m4!3m3!8m2!3d19.3568311!4d-98.6737713?hl=es&entry=ttu&g_ep=EgoyMDI2MDkwOS4wIKXMDSoASAFQAw%3D%3D" 
+                   target="_blank" 
+                   class="boton-ubicacion">
+                    <i class="fas fa-map-marked-alt"></i> Ver ubicación
+                </a>
+            </div>
+
+            <div style="margin: 1.2rem 0 0.2rem 0; font-size: 1.8rem; letter-spacing: 6px; opacity: 0.8;">
+                🎈🎉🎊🎈🎉
+            </div>
+
+            <div class="footer">
+                <span><i class="fas fa-music"></i> ¡trae tu mejor energía!</span>
+                <span><i class="fas fa-gift"></i> solo tu presencia</span>
+                <span><i class="fas fa-glass-cheers"></i> brindis</span>
+            </div>
+
+            <div style="margin-top: 0.6rem; font-size: 0.85rem; color: #7a4b5c; letter-spacing: 0.5px; background: rgba(255, 238, 243, 0.95); display: inline-block; padding: 0.2rem 1.8rem; border-radius: 30px;">
+                <i class="fas fa-heart" style="color: #d47a9a;"></i> Alondra · 22 · 25 sep · Calle Arroyo <i class="fas fa-heart" style="color: #d47a9a;"></i>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ABRIR INVITACIÓN
+        function abrirInvitacion(event) {
+            if (event) event.stopPropagation();
+
+            const pantalla = document.getElementById('pantallaApertura');
+            const wrapper = document.getElementById('invitacionWrapper');
+
+            pantalla.classList.add('abierta');
+
+            setTimeout(() => { wrapper.classList.add('visible'); }, 200);
+
+            actualizarContador();
+        }
+
+        // CONTADOR REGRESIVO - 25 sep 2026, 6:00 PM
+        function actualizarContador() {
+            const fechaEvento = new Date('September 25, 2026 18:00:00').getTime();
+            const ahora = new Date().getTime();
+            const diferencia = fechaEvento - ahora;
+
+            if (diferencia <= 0) {
+                document.getElementById('dias').textContent = '00';
+                document.getElementById('horas').textContent = '00';
+                document.getElementById('minutos').textContent = '00';
+                document.getElementById('segundos').textContent = '00';
+                return;
+            }
+
+            const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+            const horas = Math.floor((diferencia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutos = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
+            const segundos = Math.floor((diferencia % (1000 * 60)) / 1000);
+
+            document.getElementById('dias').textContent = String(dias).padStart(2, '0');
+            document.getElementById('horas').textContent = String(horas).padStart(2, '0');
+            document.getElementById('minutos').textContent = String(minutos).padStart(2, '0');
+            document.getElementById('segundos').textContent = String(segundos).padStart(2, '0');
+        }
+
+        actualizarContador();
+        setInterval(actualizarContador, 1000);
+    </script>
+</body>
+</html>
